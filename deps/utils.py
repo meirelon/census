@@ -93,13 +93,13 @@ def run(bucket_name):
 
     states, labels = get_states(key, year)
     tract_responses = get_responses(states, key, labels, year)
-    tract_responses.to_csv(f"gs://{bucket_name}/tract_responses_{dt}.csv", index=False)
+    tract_responses.to_csv(f"gs://{bucket_name}/{year}/tract_responses_{dt}.csv", index=False)
 
     state_responses = get_state_responses(key, year)
-    state_responses.to_csv(f"gs://{bucekt_name}/state_responses_{dt}.csv", index=False)
+    state_responses.to_csv(f"gs://{bucekt_name}/{year}/state_responses_{dt}.csv", index=False)
 
     county_responses = get_county_responses(states, key, labels, year)
-    county_responses.to_csv(f"gs://{bucket_name}/county_responses_{dt}.csv", index=False)
+    county_responses.to_csv(f"gs://{bucket_name}/{year}/county_responses_{dt}.csv", index=False)
 
 
     return "True"
