@@ -7,6 +7,15 @@ import numpy as np
 
 import gcsfs
 
+import requests
+import json
+from datetime import datetime
+
+import pandas as pd
+import numpy as np
+
+import gcsfs
+
 def get_states(key, year=2020):
     url = f"https://api.census.gov/data/2020/dec/responserate?get=GEO_ID,CRRALL,CRRINT,DAVG,DINTAVG,DRRALL,DRRINT&key={key}&for=state:*"
     JSONContent = requests.get(url).json()
@@ -55,7 +64,7 @@ def get_county_responses(states, key, labels, year=2020):
         temp = temp.iloc[1:,0:-2]
         county_responses = pd.concat([county_responses,temp],sort=True)
 
-        return county_responses
+    return county_responses
 
 def get_state_responses(key, year=2020):
     url = f"https://api.census.gov/data/2020/dec/responserate?get=GEO_ID,CRRALL,CRRINT,DAVG,DINTAVG,DRRALL,DRRINT&key={key}&for=state:*"
@@ -66,24 +75,6 @@ def get_state_responses(key, year=2020):
 
     return state_responses
 
-
-def run():
-    year=2020
-    key = '2988f01f5e86175bda8beae2b5035e1ccef2d052'
-    dt = datetime.now().strftime("%Y%m%d")
-
-    states, labels = get_states(key, year)
-    tract_responses = get_responses(states, key, labels, year)
-    tract_responses.to_csv(f"gs://twitter_bots/tract_responses_{dt}.csv", index=False)
-
-    state_responses = get_state_responses(key, year)
-    state_responses.to_csv(f"gs://twitter_bots/state_responses_{dt}.csv", index=False)
-
-    county_responses = get_county_responses(states, key, labels, year)
-    county_responses.to_csv(f"gs://twitter_bots/county_responses_{dt}.csv", index=False)
-
-
-    return "True"
 
 
 def run(bucket_name):
